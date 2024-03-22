@@ -6,7 +6,6 @@ const verifyJWT = (req, res, next) => {
     try {
         const token = req.headers["authorization"]
         const decoded = jwt.verify(token, JWT_SECRET)
-        console.log(decoded);
         if (decoded.role === 'admin') { //extend jwt expiration time for 30 minutes
             const extendedToken = jwt.sign({ ...decoded, exp: decoded.exp + (30 * 60) }, JWT_SECRET)
             console.log(extendedToken)
