@@ -6,7 +6,7 @@ const path = require('path');
 
 const db = require('./config/db.js');
 const authRoutes = require('./routes/authRoutes');
-const authMiddleware = require('./middleware/auth.middleware.js');
+const authMiddleware = require('./middleware/authMiddleware.js');
 
 const app = express()   
 app.use(bodyParser.json());
