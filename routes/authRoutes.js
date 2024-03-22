@@ -8,7 +8,8 @@ const router = express.Router();
 
 router.post('/login', (req, res) => {
     const user = req.body;
-    db.user.findOne({ [user.phoneNumber ? 'phoneNumber' : 'username']: user.phoneNumber || user.username })
+    const whereCondition = user.phoneNumber ? { phoneNumber: user.phoneNumber } : { username: user.username };
+    db.user.findOne({ where: whereCondition })
         .then(user => {
             if (user) {
                 bcrypt.compare(req.body.password, user.password)
