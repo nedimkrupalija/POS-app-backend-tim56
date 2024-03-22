@@ -3,8 +3,9 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const session = require('express-session');
 const path = require('path');
-const db = require('./config/db.js');
 
+const db = require('./config/db.js');
+const authMiddleware = require('./middleware/auth.middleware.js');
 
 
 
@@ -16,9 +17,8 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`)
 })
 
-app.get('/test', (req, res) => {
+app.get('/test', authMiddleware, (req, res) => {
   res.status(200).json('Hello World!')
 }) 
-
 
 module.exports = app;
