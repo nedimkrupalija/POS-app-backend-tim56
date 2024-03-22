@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
-const sequelize = new Sequelize("wt24","root","password",{host:"127.0.0.1",dialect:"mysql",logging:false});
+const mysql2 = require('mysql2');
+const sequelize = new Sequelize("wt24","root","password",{host:"127.0.0.1",dialect:"mysql",dialectModule:mysql2,logging:false});
 const db={};
 const path = require('path');
 
