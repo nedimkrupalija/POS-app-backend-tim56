@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = require('../constants.js').JWT_SECRET
 
-
 function generateJwtToken(user) {
     const role = user.role;
     const username = user.username;
