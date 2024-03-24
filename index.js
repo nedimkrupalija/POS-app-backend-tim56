@@ -5,7 +5,8 @@ const session = require('express-session');
 const path = require('path');
 const db = require('./config/db.js');
 
-
+const cors = require('cors');
+app.use(cors());
 
 
 const app = express()   
