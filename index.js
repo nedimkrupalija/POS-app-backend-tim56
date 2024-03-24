@@ -7,17 +7,17 @@ const path = require('path');
 const db = require('./config/db.js');
 
 const cors = require('cors');
-app.use(cors());
+const PORT =  3000
 
 
-const db = require('./config/db.js');
+
 const authRoutes = require('./routes/authRoutes');
 const authMiddleware = require('./middleware/authMiddleware.js');
 
 const app = express()   
 app.use(bodyParser.json());
-const PORT =  3000
 
+app.use(cors());
 db.sequelize.sync();
 
 app.use('/auth', authRoutes);
