@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const db = require('../config/db.js');
 const generateJwtToken = require('./jwtController.js');
@@ -9,6 +9,7 @@ function login(req, res) {
     db.user.findOne({ where: whereCondition })
         .then(foundUser => {
             if (foundUser && foundUser.role === user.role) {
+                
                 bcrypt.compare(req.body.password, foundUser.password)
                     .then(match => {
                         if (match) {
