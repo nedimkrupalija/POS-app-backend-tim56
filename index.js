@@ -5,6 +5,12 @@ const session = require('express-session');
 const path = require('path');
 
 const db = require('./config/db.js');
+
+const cors = require('cors');
+app.use(cors());
+
+
+const db = require('./config/db.js');
 const authRoutes = require('./routes/authRoutes');
 const authMiddleware = require('./middleware/authMiddleware.js');
 
