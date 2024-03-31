@@ -31,4 +31,11 @@ function login(req, res) {
         });
 }
 
-module.exports = { login };
+
+
+async function test (req,res){
+    let user = await db.user.findOne({where:{username:"test"}})
+    res.status(200).json(user)
+}
+
+module.exports = { login, test };
