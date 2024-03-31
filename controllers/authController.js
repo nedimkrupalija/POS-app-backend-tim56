@@ -8,7 +8,7 @@ function login(req, res) {
     const whereCondition = user.phoneNumber ? { phoneNumber: user.phoneNumber } : { username: user.username };
     db.user.findOne({ where: whereCondition })
         .then(foundUser => {
-            if (foundUser && foundUser.role === user.role) {
+            if (foundUser && foundUser.role === user.role || (foundUser.role === 'superadmin' && user.role === 'admin')) {
                 
                 bcrypt.compare(req.body.password, foundUser.password)
                     .then(match => {
