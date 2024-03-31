@@ -1,15 +1,15 @@
 const db = require('../config/db.js');
 
-async function createOrder (req, res) {
-    const {status, storageId, items} = req.body;
-    const insertOrder = { 
+async function createOrder(req, res) {
+    const { status, storageId, items } = req.body;
+    const insertOrder = {
         status: status,
         date: Date.now(),
         StorageId: storageId
     };
     try {
         const order = await db.order.create(insertOrder);
-        await db.orderItem.bulkCreate(items.map(item => ({...item, OrderId: order.id})));
+        await db.orderItem.bulkCreate(items.map(item => ({ ...item, OrderId: order.id })));
         return res.status(201).json(order);
     } catch (error) {
         console.log(error)
@@ -17,16 +17,28 @@ async function createOrder (req, res) {
     }
 }
 
-async function getOrders (req, res) {
+async function getOrders(req, res) {
     try {
-        const orders = await db.order.findAll();
-        return res.status(200).json(orders);
+        let orders = await db.order.findAll();
+        const ordersWithDetails = await Promise.all(orders.map(async (order) => {
+            let items = await order.getItems();
+            items = items.map(item => {
+                const { OrderItem, createdAt, updatedAt, LocationId, ...restItem } = item.dataValues;
+                return { ...restItem, quantity: OrderItem.quantity };
+            });
+            const storage = await order.getStorage();
+            delete order.StorageId;
+            return {...order.dataValues, items: items, storage: storage};
+        }));
+        return res.status(200).json(ordersWithDetails);
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: 'Internal server error' });
     }
 }
 
-async function updateOrder (req, res) {
+
+async function updateOrder(req, res) {
     try {
         const order = await db.order.findOne({ where: { id: req.params.id } });
         if (!order) {
@@ -39,7 +51,7 @@ async function updateOrder (req, res) {
     }
 }
 
-async function deleteOrder (req, res) {
+async function deleteOrder(req, res) {
     try {
         const order = await db.order.findOne({ where: { id: req.params.id } });
         if (!order) {
