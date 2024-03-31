@@ -7,5 +7,9 @@ const path = require('path');
 db.Sequelize = Sequelize;  
 db.sequelize = sequelize;
 db.user = require('../models/User.js')(sequelize,Sequelize);
+db.location = require('../models/Location.js')(sequelize,Sequelize);
+db.storage = require('../models/Storage.js')(sequelize,Sequelize);
+db.POS = require('../models/POS.js')(sequelize,Sequelize);
+
 
 module.exports = db;
