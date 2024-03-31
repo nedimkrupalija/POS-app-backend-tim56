@@ -15,8 +15,9 @@ async function getUsers(req, res) {
 async function getAdministrators(req, res) {
     try {
         const admins = await db.user.findAll({ where: { role: 'admin' } });
-        return res.status(200).json(users);    
+        return res.status(200).json(admins);    
     } catch (error) {
+        console.log(error)
          res.status(500).json({ message: 'Internal server error' });
     }
 }

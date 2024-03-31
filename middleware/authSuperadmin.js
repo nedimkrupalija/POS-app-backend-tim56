@@ -2,7 +2,7 @@
 
 const verifySuperadmin = (req, res, next) => {
     try {
-        if(!req.session && req.session.role !== "superadmin"){
+        if(!req.session.role && req.session.role !== "superadmin"){
             return res.status(403).json({ message: 'Forbidden' });
         }
         next()

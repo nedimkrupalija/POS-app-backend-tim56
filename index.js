@@ -28,7 +28,7 @@ app.use(cors());
 db.sequelize.sync();
 
 app.use('/auth', authRoutes);
-app.use('/admin',adminRoutes);
+app.use('/admin',authMiddleware, adminRoutes);
 
 
 app.listen(PORT, () => {
