@@ -12,6 +12,19 @@ async function getStorage(req,res){
     }
 }
 
+async function getStorageUnique(req,res){
+    try{
+        const storage = await Storage.findByPk(req.params.id);
+        if(!storage){
+            return res.status(404).json({message: 'Storage not found'});
+        }
+
+        res.json(storage)
+    }catch{
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
 async function createStorage(req,res){
     try{
         const storage = await Storage.create(req.body);
@@ -40,4 +53,4 @@ async function deleteStorage(req,res){
     }
 }
 
-module.exports = {getStorage,createStorage,updateStorage,deleteStorage};
+module.exports = {getStorage,getStorageUnique,createStorage,updateStorage,deleteStorage};
