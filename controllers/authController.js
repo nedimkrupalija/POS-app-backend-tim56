@@ -14,12 +14,15 @@ function login(req, res) {
                     .then(match => {
                         if (match) {
                             const token = generateJwtToken(foundUser);
+                            req.session.role = foundUser.role;
+                            
                             res.status(200).json({ token: token, phoneNumber: foundUser.phoneNumber});
                         } else {
                             res.status(400).json({ message: 'Invalid password' });
                         }
                     })
                     .catch(err => {
+                        
                         res.status(500).json({ message: 'Internal server error' });
                     });
             } else {
@@ -33,9 +36,5 @@ function login(req, res) {
 
 
 
-async function test (req,res){
-    let user = await db.user.findOne({where:{username:"test"}})
-    res.status(200).json(user)
-}
 
-module.exports = { login, test };
+module.exports = { login};
