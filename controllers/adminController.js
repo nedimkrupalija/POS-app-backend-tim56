@@ -1,5 +1,5 @@
 const db = require('../config/db.js');
-
+const bcrypt = require('bcryptjs');
 
 async function getUsers(req, res) {
     try {
@@ -28,6 +28,7 @@ async function updateUser(req, res) {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
+        req.body.password = await bcrypt.hash(req.body.password, 10);
         await user.update(req.body);
         return res.status(200).json(user);
     } catch (error) {
@@ -41,6 +42,7 @@ async function updateAdministrator(req, res) {
         if (!admin) {
             return res.status(404).json({ message: 'Admin not found' });
         }
+        req.body.password = await bcrypt.hash(req.body.password, 10);
         await admin.update(req.body);
         return res.status(200).json(admin);
     } catch (error) {
@@ -76,7 +78,9 @@ async function deleteAdministrator(req,res){
 
 async function createUser(req, res) {
     try {
+        req.body.password = await bcrypt.hash(req.body.password, 10);
         const user = await db.user.create(req.body);
+
         return res.status(201).json(user);
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
