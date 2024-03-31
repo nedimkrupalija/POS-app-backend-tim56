@@ -7,6 +7,8 @@ const router = express.Router();
 router.get('/:id',adminMiddleware,storageController.getStorageUnique);
 router.get('/',adminMiddleware,storageController.getStorage);
 router.get('/:id',adminMiddleware,storageController.getStorageUnique);
+router.get('/:id/status',adminMiddleware,storageController.getStorageStatus);
+router.get('/:id/items',adminMiddleware, storageController.getAvailableItemsForStorage);
 
 router.post('/',adminMiddleware,storageController.createStorage);
 
