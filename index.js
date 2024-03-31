@@ -14,6 +14,7 @@ const PORT = process.env.PORT || 3000
 const authRoutes = require('./routes/authRoutes');
 const authMiddleware = require('./middleware/authMiddleware.js');
 const adminRoutes = require('./routes/adminRoutes.js');
+const orderRoutes = require('./routes/orderRoutes.js');
 
 const app = express()   
 app.use(bodyParser.json());
@@ -28,7 +29,8 @@ app.use(cors());
 db.sequelize.sync();
 
 app.use('/auth', authRoutes);
-app.use('/admin',authMiddleware, adminRoutes);
+app.use('/admin', authMiddleware, adminRoutes);
+app.use('/orders', authMiddleware, orderRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -33,6 +33,7 @@ db.storage.belongsToMany(db.item,{through:db.storageItem});
 db.location.hasMany(db.pos);
 db.pos.belongsTo(db.location);
 
-
+db.order.belongsTo(db.storage);
+db.storage.hasMany(db.order);
 
 module.exports = db;
