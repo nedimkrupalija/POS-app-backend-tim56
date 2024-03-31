@@ -1,44 +1,14 @@
-const db = require('../config/db.js');
 const express = require('express');
+const storageController = require('../controllers/storageController.js') 
 const router = express.Router();
 
-const Storage = db.storage
 
+router.get('/',storageController.getStorage);
 
-router.get('/', async (req, res) => {
-    try {
-        const storage = await Storage.findAll();
-        res.json(storage);
-    } catch (error) {
-        res.status(500).json({ message: 'Internal server error' });
-    }
-});
+router.post('/',storageController.createStorage);
 
-router.post('/', async (req, res) =>{
-    try{
-        const storage = await Storage.create(req.body);
-        res.json(storage);
-    }catch{
-        res.status(500).json({ message: 'Internal server error' });
-    }
-})
+router.put('/:id',storageController.updateStorage)
 
-router.put('/:id',async (req,res)=>{
-    try{
-        await Storage.update(req.body,{where: {id: req.params.id}});
-        res.status(200).end();
-    }catch{
-        res.status(500).json({ message: 'Internal server error' });
-    }
-})
-
-router.delete('/:id',async (req,res)=>{
-    try{
-        await Storage.destroy({where: {id: req.params.id}});
-        res.status(200).end();
-    }catch{
-        res.status(500).json({ message: 'Internal server error' });
-    }
-})
+router.delete('/:id',storageController.deleteStorage);
 
 module.exports = router
