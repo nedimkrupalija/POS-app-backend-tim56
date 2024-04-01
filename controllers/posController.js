@@ -46,7 +46,7 @@ async function checkoutPOS(req,res){
     try{
         for(const item of items){
            // const {id,StorageItem} = item;
-            const {id,OrderItems} = item
+            const {id,name,OrderItems} = item
             const {quantity} = OrderItems;
 
             const storageItem = await StorageItem.findOne({
@@ -54,7 +54,11 @@ async function checkoutPOS(req,res){
             });
 
             if(storageItem){
+                if(storageItem.quantity >= quantity){
                 await storageItem.update({quantity: storageItem.quantity - quantity})
+                }else{
+                    return res.status(400).json({message: 'Insufficient quantity in storage for item '+ name});
+                }
             }else{
                 return res.status(404).json({message: 'Storage item not found'});
             }
