@@ -77,5 +77,36 @@ async function deleteOrder(req, res) {
     }
 }
 
-module.exports = { createOrder, getOrders, updateOrder, deleteOrder };
+async function finishOrder(req, res) {
+    try {
+        const order = await db.order.findOne({ where: { id: req.params.id } });
+        const StorageId = order.StorageId;
+        if (!order) {
+            return res.status(404).json({ message: 'Order not found' });
+        }
+        const storage= await db.storage.findOne({ where: { id: StorageId } });
+        let items = await order.getItems();
+        items = items.map(item => {return item.dataValues})
+        console.log(items);
+        for (const item of items) {
+            const ItemId = item.id;
+            const quantity = parseInt(item.OrderItem.dataValues.quantity);
+            const storageItem = await db.storageItem.findOne({ where: { StorageId, ItemId } });
+            if (storageItem) {
+                const newQuantity = storageItem.quantity + quantity;
+                await storageItem.update({ quantity: newQuantity });
+            } else {
+                await db.storageItem.create({ StorageId, ItemId, quantity });
+            }
+        }
+        await order.update({ status: 'processed' });
+        return res.status(200).json({ message: 'Order sucessfully finished' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+
+module.exports = { createOrder, getOrders, updateOrder, deleteOrder, finishOrder };
 
