@@ -87,7 +87,6 @@ async function finishOrder(req, res) {
         const storage= await db.storage.findOne({ where: { id: StorageId } });
         let items = await order.getItems();
         items = items.map(item => {return item.dataValues})
-        console.log(items);
         for (const item of items) {
             const ItemId = item.id;
             const quantity = parseInt(item.OrderItem.dataValues.quantity);
