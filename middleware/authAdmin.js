@@ -7,8 +7,7 @@ const verifyAdmin = (req, res, next) => {
         const decoded = jwt.decode(token);
         if( decoded.role !== "superadmin" && decoded.role !== "admin"){
             return res.status(403).json({ message: 'Forbidden' });
-        }
-        
+        } 
         next()
     } catch (error) {
        return res.status(401).json({

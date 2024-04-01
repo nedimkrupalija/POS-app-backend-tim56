@@ -14,6 +14,7 @@ const PORT = process.env.PORT || 3000
 const authRoutes = require('./routes/authRoutes');
 const authMiddleware = require('./middleware/authMiddleware.js');
 const adminRoutes = require('./routes/adminRoutes.js');
+const orderRoutes = require('./routes/orderRoutes.js');
 const locationRoutes = require('./routes/locationRoutes.js')
 const storageRoutes = require('./routes/storageRoutes.js')
 const posRoutes = require('./routes/posRoutes.js')
@@ -36,7 +37,11 @@ app.use('/admin',authMiddleware, adminRoutes);
 app.use('/location',locationRoutes);
 app.use('/storage',storageRoutes);
 app.use('/pos',posRoutes)
+
 app.use('/item',itemRoutes);
+
+app.use('/orders',authMiddleware,orderRoutes);
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
