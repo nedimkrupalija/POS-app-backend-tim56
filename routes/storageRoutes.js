@@ -1,15 +1,19 @@
 const express = require('express');
-const storageController = require('../controllers/storageController.js') 
+const storageController = require('../controllers/storageController.js')
+const adminMiddleware = require('../middleware/authAdmin.js');
+
 const router = express.Router();
 
-router.get('/:id',storageController.getStorageUnique);
-router.get('/',storageController.getStorage);
-router.get('/:id',storageController.getStorageUnique);
+router.get('/:id',adminMiddleware,storageController.getStorageUnique);
+router.get('/',adminMiddleware,storageController.getStorage);
+router.get('/:id',adminMiddleware,storageController.getStorageUnique);
+router.get('/:id/status',adminMiddleware,storageController.getStorageStatus);
+router.get('/:id/items',adminMiddleware, storageController.getAvailableItemsForStorage);
 
-router.post('/',storageController.createStorage);
+router.post('/',adminMiddleware,storageController.createStorage);
 
-router.put('/:id',storageController.updateStorage)
+router.put('/:id',adminMiddleware,storageController.updateStorage)
 
-router.delete('/:id',storageController.deleteStorage);
+router.delete('/:id',adminMiddleware,storageController.deleteStorage);
 
 module.exports = router
