@@ -39,14 +39,27 @@ async function getOrders(req, res) {
 
 
 async function updateOrder(req, res) {
+    const OrderId = req.params.id;
+    const {items} = req.body;
     try {
         const order = await db.order.findOne({ where: { id: req.params.id } });
         if (!order) {
             return res.status(404).json({ message: 'Order not found' });
         }
         await order.update(req.body);
-        return res.status(200).json(order);
+        for (const item of items) {
+            const ItemId = item.ItemId;
+            const quantity = parseInt(item.quantity);
+            if (quantity === 0) {
+                await db.orderItem.destroy({ where: { OrderId: req.params.id } });
+            } else {
+                await db.orderItem.upsert({ OrderId, ItemId, quantity });
+            }
+        }
+        const updatedOrder = await db.order.findOne({ where: { id: OrderId } });
+        return res.status(200).json(updatedOrder);
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: 'Internal server error' });
     }
 }
