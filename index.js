@@ -15,6 +15,9 @@ const authRoutes = require('./routes/authRoutes');
 const authMiddleware = require('./middleware/authMiddleware.js');
 const adminRoutes = require('./routes/adminRoutes.js');
 const orderRoutes = require('./routes/orderRoutes.js');
+const locationRoutes = require('./routes/locationRoutes.js')
+const storageRoutes = require('./routes/storageRoutes.js')
+const posRoutes = require('./routes/posRoutes.js')
 
 const app = express()   
 app.use(bodyParser.json());
@@ -29,8 +32,11 @@ app.use(cors());
 db.sequelize.sync();
 
 app.use('/auth', authRoutes);
-app.use('/admin', authMiddleware, adminRoutes);
-app.use('/orders', authMiddleware, orderRoutes);
+app.use('/admin',authMiddleware, adminRoutes);
+app.use('/location',locationRoutes);
+app.use('/storage',storageRoutes);
+app.use('/pos',posRoutes)
+app.use('/orders',authMiddleware,orderRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
