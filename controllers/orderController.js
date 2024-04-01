@@ -27,7 +27,7 @@ async function getOrders(req, res) {
                 return { ...restItem, quantity: OrderItem.quantity };
             });
             const storage = await order.getStorage();
-            delete order.StorageId;
+            delete order.dataValues.StorageId;
             return {...order.dataValues, items: items, storage: storage};
         }));
         return res.status(200).json(ordersWithDetails);
