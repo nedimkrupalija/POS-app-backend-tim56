@@ -6,7 +6,8 @@ const router = express.Router();
 
 router.get('/',adminMiddleware,posController.getPOS);
 
-router.post('/',adminMiddleware,posController.createPOS);
+router.post('/checkout',/*adminMiddleware,*/posController.checkoutPOS);
+router.post('/',/*adminMiddleware,*/posController.createPOS);
 
 router.put('/:id',adminMiddleware,posController.updatePOS);
 

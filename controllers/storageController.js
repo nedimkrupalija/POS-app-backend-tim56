@@ -1,6 +1,8 @@
 const db = require('../config/db.js');
 
 const Storage = db.storage
+const Location = db.location
+const Item = db.item
 
 
 async function getStorage(req,res){
@@ -13,8 +15,14 @@ async function getStorage(req,res){
 }
 
 async function getStorageUnique(req,res){
+    const {id} = req.params
     try{
-        const storage = await Storage.findByPk(req.params.id);
+        const storage = await Storage.findByPk(id,{
+            include: [
+                {model: Location, attributes: ['name']},
+                {model: Item, attributes: ['id','name']}
+            ]
+        });
         if(!storage){
             return res.status(404).json({message: 'Storage not found'});
         }
