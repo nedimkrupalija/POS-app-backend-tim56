@@ -7,6 +7,7 @@ const adminRoutes = require('../../routes/adminRoutes.js');
 const authRoutes = require('../../routes/authRoutes.js');
 const orderRoutes = require('../../routes/orderRoutes.js'); 
 const authMiddleware = require('../../middleware/authMiddleware.js');
+const itemRoutes = require('../../routes/itemRoutes.js');
 
 const app = require('express')();
 app.use(bodyParser.json());
@@ -20,6 +21,10 @@ app.use(session({
 }));
 app.use('/auth', authRoutes);
 app.use('/admin',authMiddleware, adminRoutes);
+
+app.use('/item', itemRoutes);
+
 app.use('/orders',authMiddleware,orderRoutes);
+
 
 module.exports=app;
