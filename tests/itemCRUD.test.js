@@ -139,6 +139,11 @@ describe('Item CRUD functions', () => {
             expect(res.statusCode).toEqual(404);
         });
     });
+
+    afterAll(async () => {
+        await Item.destroy({ where: { id: itemId } });
+        await Location.destroy({ where: { id: locationId } });
+    });
 });
 
 afterAll(async () => {
