@@ -45,6 +45,10 @@ async function createStorage(req,res){
 
 async function updateStorage(req,res){
     try{
+        const storage = await Storage.findByPk(req.params.id);
+        if(!storage){
+            return res.status(404).json({message: 'Storage not found'});
+        }
         await Storage.update(req.body,{where: {id: req.params.id}});
         res.status(200).end();
     }catch{
@@ -54,6 +58,10 @@ async function updateStorage(req,res){
 
 async function deleteStorage(req,res){
     try{
+        const storage = await Storage.findByPk(req.params.id);
+        if(!storage){
+            return res.status(404).json({message: 'Storage not found'});
+        }
         await Storage.destroy({where: {id: req.params.id}});
         res.status(200).end();
     }catch{

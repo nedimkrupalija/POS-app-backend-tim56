@@ -25,6 +25,10 @@ async function createPOS(req,res){
 
 async function updatePOS(req,res){
     try {
+        const pos = await POS.findByPk(req.params.id);
+        if(!pos){
+            return res.status(404).json({message: 'Storage not found'});
+        }
         await POS.update(req.body, { where: { id: req.params.id } });
         res.status(200).end();
     } catch (error) {
@@ -34,6 +38,10 @@ async function updatePOS(req,res){
 
 async function deletePOS(req,res){
     try {
+        const pos = await POS.findByPk(req.params.id);
+        if(!pos){
+            return res.status(404).json({message: 'Storage not found'});
+        }
         await POS.destroy({ where: { id: req.params.id } });
         res.status(200).end();
     } catch (error) {
