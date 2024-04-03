@@ -88,6 +88,8 @@ async function createUser(req, res) {
 
 async function createAdministrator(req, res) {
     try {
+        req.body.password = await bcrypt.hash(req.body.password, 10);
+
         const admin = await db.user.create(req.body);
         return res.status(201).json(admin);
     } catch (error) {
