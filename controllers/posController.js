@@ -17,8 +17,9 @@ async function getPOS(req,res){
 async function createPOS(req,res){
     try{
         const pos = await POS.create(req.body);
-        res.json(pos);
-    }catch{
+        return res.status(200).json(pos);
+    }catch(error){
+        console.log(error)
         res.status(500).json({ message: 'Internal server error' });
     }
 }
@@ -30,7 +31,7 @@ async function updatePOS(req,res){
             return res.status(404).json({message: 'Storage not found'});
         }
         await POS.update(req.body, { where: { id: req.params.id } });
-        res.status(200).end();
+        return res.status(200).json(pos);
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
     }
@@ -43,8 +44,9 @@ async function deletePOS(req,res){
             return res.status(404).json({message: 'Storage not found'});
         }
         await POS.destroy({ where: { id: req.params.id } });
-        res.status(200).end();
+        return res.status(200).json({ message: 'POS sucessfully deleted' });
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: 'Internal server error' });
     }
 }
@@ -71,7 +73,7 @@ async function checkoutPOS(req,res){
                 return res.status(404).json({message: 'Storage item not found'});
             }
         }
-            res.status(200).end()
+        return res.status(200).json({ message: 'Storage updated' });
         
     }catch{
         res.status(500).json({ message: 'Internal server error' });

@@ -36,7 +36,8 @@ async function getStorageUnique(req,res){
 async function createStorage(req,res){
     try{
         const storage = await Storage.create(req.body);
-        res.json(storage);
+        
+       return res.status(200).json(storage);
     }catch{
         res.status(500).json({ message: 'Internal server error' });
     }
@@ -50,7 +51,7 @@ async function updateStorage(req,res){
             return res.status(404).json({message: 'Storage not found'});
         }
         await Storage.update(req.body,{where: {id: req.params.id}});
-        res.status(200).end();
+        return res.status(200).json(storage);
     }catch{
         res.status(500).json({ message: 'Internal server error' });
     }
@@ -63,7 +64,7 @@ async function deleteStorage(req,res){
             return res.status(404).json({message: 'Storage not found'});
         }
         await Storage.destroy({where: {id: req.params.id}});
-        res.status(200).end();
+        return res.status(200).json({ message: 'Storage sucessfully deleted' });
     }catch{
         res.status(500).json({ message: 'Internal server error' });
     }
