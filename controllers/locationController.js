@@ -1,10 +1,28 @@
 const db = require('../config/db.js');
 
 const Location = db.location
+const POS = db.pos
 
 async function getLocations(req,res){
     try {
-        const locations = await Location.findAll();
+        const locations = await Location.findAll({
+            include: POS
+        });
+        res.json(locations);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+async function getLocationsUnique(req,res){
+    const {id} = req.params
+    try {
+        const locations = await Location.findByPk(id,{
+            include: POS
+        });
+        if(!locations){
+            return res.status(404).json({message: 'Location not found'});
+        }
         res.json(locations);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -22,6 +40,10 @@ async function createLocation(req,res){
 
 async function updateLocation(req,res){
     try {
+        const location = await Location.findByPk(req.params.id);
+        if(!location){
+            return res.status(404).json({message: 'Location not found'});
+        }
         await Location.update(req.body, { where: { id: req.params.id } });
         res.status(200).end();
     } catch (error) {
@@ -31,6 +53,10 @@ async function updateLocation(req,res){
 
 async function deleteLocation(req,res){
     try {
+        const location = await Location.findByPk(req.params.id);
+        if(!location){
+            return res.status(404).json({message: 'Location not found'});
+        }
         await Location.destroy({ where: { id: req.params.id } });
         res.status(200).end();
     } catch (error) {
@@ -38,4 +64,4 @@ async function deleteLocation(req,res){
     }
 }
 
-module.exports = {getLocations,createLocation,updateLocation,deleteLocation};
+module.exports = {getLocations,getLocationsUnique,createLocation,updateLocation,deleteLocation};
