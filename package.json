@@ -20,6 +20,16 @@
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "supertest": "^6.3.4"
+    "supertest": "^6.3.4",
+    "ts-jest": "^29.1.2"
+  },
+  "jest": {
+    "testRegex": "(/tests/.*|\\.(test|spec))\\.(js|jsx)$",
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "jsx",
+      "scss"
+    ]
   }
 }
