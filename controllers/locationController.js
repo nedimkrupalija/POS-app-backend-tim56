@@ -65,4 +65,18 @@ async function deleteLocation(req,res){
     }
 }
 
-module.exports = {getLocations,getLocationsUnique,createLocation,updateLocation,deleteLocation};
+async function getTablesForLocation(req,res){
+    const {id} = req.params
+    try {
+        const location = await Location.findByPk(id);
+        if(!location){
+            return res.status(404).json({message: 'Location not found'});
+        }
+        const tables = await location.getTables();
+        res.json(tables);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+module.exports = {getLocations,getLocationsUnique,createLocation,updateLocation,deleteLocation, getTablesForLocation};
