@@ -30,7 +30,7 @@ app.use(session({
 }));
 
 app.use(cors());
-db.sequelize.sync();
+db.sequelize.sync({force:true});
 
 app.use('/auth', authRoutes);
 app.use('/admin',authMiddleware.verifyJWT, adminRoutes);
