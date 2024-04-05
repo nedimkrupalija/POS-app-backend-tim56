@@ -9,7 +9,6 @@ async function getItems(req, res) {
             include: db.location,
             attributes: { exclude: ['LocationId'] } 
         });
-
         res.status(200).json(items);
     } catch (error) {
         console.log(error);

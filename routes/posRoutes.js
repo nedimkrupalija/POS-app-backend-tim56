@@ -1,8 +1,10 @@
 const express = require('express');
 const posController = require('../controllers/posController.js') 
 const adminMiddleware = require('../middleware/authAdmin.js');
+const authMiddleware = require('../middleware/authMiddleware.js');
 
 const router = express.Router();
+router.use(authMiddleware.addJwtHeader);
 
 router.get('/',adminMiddleware,posController.getPOS);
 
