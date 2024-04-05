@@ -22,7 +22,16 @@ const verifyJWT = (req, res, next) => {
     }
 }
 
+const addJwtHeader = (req,res,next) => {
+        res.setHeader('Authorization', `${req.headers["Authorization"]}`);
+        next();
+};
 
-module.exports = verifyJWT;
+
+module.exports = {
+    verifyJWT,
+    addJwtHeader
+}
+
 
 

@@ -33,14 +33,12 @@ app.use(cors());
 db.sequelize.sync();
 
 app.use('/auth', authRoutes);
-app.use('/admin',authMiddleware, adminRoutes);
-app.use('/location',locationRoutes);
-app.use('/storage',storageRoutes);
-app.use('/pos',posRoutes)
-
-app.use('/item',itemRoutes);
-
-app.use('/orders',authMiddleware,orderRoutes);
+app.use('/admin',authMiddleware.verifyJWT, adminRoutes);
+app.use('/location',authMiddleware.verifyJWT,locationRoutes);
+app.use('/storage',authMiddleware.verifyJWT,storageRoutes);
+app.use('/pos',authMiddleware.verifyJWT,posRoutes)
+app.use('/item',authMiddleware.verifyJWT,itemRoutes);
+app.use('/orders',authMiddleware.verifyJWT,orderRoutes);
 
 
 app.listen(PORT, () => {

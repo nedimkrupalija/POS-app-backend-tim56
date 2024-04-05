@@ -3,8 +3,10 @@ const express = require('express');
 const adminController = require('../controllers/adminController.js');
 const router = express.Router();
 const authAdminMiddleware = require('../middleware/authAdmin.js');    
-const authSuperadminMiddleware = require('../middleware/authSuperadmin.js');    
+const authSuperadminMiddleware = require('../middleware/authSuperadmin.js');
+const authMiddleware = require('../middleware/authMiddleware.js');
 
+router.use(authMiddleware.addJwtHeader);
 
 
 router.get('/users',  authAdminMiddleware, adminController.getUsers);
