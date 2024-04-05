@@ -6,7 +6,8 @@ const POS = db.pos
 async function getLocations(req,res){
     try {
         const locations = await Location.findAll({
-            include: POS
+            include: POS,
+            include: db.storage
         });
         res.json(locations);
     } catch (error) {
@@ -45,7 +46,7 @@ async function updateLocation(req,res){
             return res.status(404).json({message: 'Location not found'});
         }
         await Location.update(req.body, { where: { id: req.params.id } });
-        res.status(200).end();
+        res.status(200).json(location);
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
     }
@@ -58,7 +59,7 @@ async function deleteLocation(req,res){
             return res.status(404).json({message: 'Location not found'});
         }
         await Location.destroy({ where: { id: req.params.id } });
-        res.status(200).end();
+        return res.status(200).json({ message: 'Location sucessfully deleted' });
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
     }
