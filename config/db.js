@@ -14,6 +14,8 @@ db.order = require('../models/Order.js')(sequelize,Sequelize);
 db.pos = require('../models/POS.js')(sequelize,Sequelize);
 db.location = require('../models/Location.js')(sequelize,Sequelize);
 db.storageItem = require('../models/StorageItem.js')(sequelize,Sequelize);
+db.vat = require('../models/VAT.js')(sequelize,Sequelize);
+
 
 db.location.hasOne(db.storage);
 db.storage.belongsTo(db.location);
