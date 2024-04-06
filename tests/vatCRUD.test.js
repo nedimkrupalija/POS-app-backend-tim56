@@ -2,12 +2,6 @@ const request = require('supertest');
 const app = require('../tests/test-app/test.app.js');
 const db = require('../config/db.js');
 
-jest.mock('../config/db.js');
-
-beforeEach(() => {
-    jest.clearAllMocks();
-});
-
 describe('VAT Controller', () => {
     let token;
     let cookie;
@@ -23,6 +17,10 @@ describe('VAT Controller', () => {
                 cookie = response.headers['set-cookie'];
                 token = response.body.token;
             });
+    });
+
+    afterAll(async () => {
+        jest.clearAllMocks();
     });
 
     describe('getVAT', () => {
