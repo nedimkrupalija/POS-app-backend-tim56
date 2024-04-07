@@ -50,8 +50,8 @@ async function updateStorage(req,res){
         if(!storage){
             return res.status(404).json({message: 'Storage not found'});
         }
-        await Storage.update(req.body,{where: {id: req.params.id}});
-        return res.status(200).json(storage);
+        const updatedStorage = await Storage.update(req.body,{where: {id: req.params.id}});
+        return res.status(200).json(updatedStorage);
     }catch{
         res.status(500).json({ message: 'Internal server error' });
     }
