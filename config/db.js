@@ -16,6 +16,8 @@ db.location = require('../models/Location.js')(sequelize,Sequelize);
 db.storageItem = require('../models/StorageItem.js')(sequelize,Sequelize);
 db.table = require('../models/Table.js')(sequelize,Sequelize);
 db.vat = require('../models/VAT.js')(sequelize,Sequelize);
+db.purchase = require('../models/Purchase.js')(sequelize,Sequelize);
+db.purchaseItem = require('../models/PurchaseItem.js')(sequelize,Sequelize);
 
 
 db.location.hasOne(db.storage);
@@ -47,5 +49,8 @@ db.user.hasMany(db.table);
 
 db.table.belongsTo(db.location);
 db.location.hasMany(db.table);
+
+db.purchase.belongsToMany(db.item, {through: db.purchaseItem});
+db.item.belongsToMany(db.purchase,{through: db.purchaseItem});
 
 module.exports = db;

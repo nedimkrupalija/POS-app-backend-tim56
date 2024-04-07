@@ -20,6 +20,7 @@ const posRoutes = require('./routes/posRoutes.js')
 const itemRoutes = require('./routes/itemRoutes.js');
 const userRoutes = require('./routes/userRoutes.js');
 const vatRoutes = require('./routes/vatRoutes.js');
+const purchaseRoutes = require('./routes/purchaseRoutes.js');
 
 
 const app = express()   
@@ -41,7 +42,9 @@ app.use('/storage',authMiddleware.verifyJWT,storageRoutes);
 app.use('/pos',authMiddleware.verifyJWT,posRoutes)
 app.use('/item',authMiddleware.verifyJWT,itemRoutes);
 app.use('/orders',authMiddleware.verifyJWT,orderRoutes);
-app.use('/user',authMiddleware.verifyJWT,userRoutes);app.use('/vat',authMiddleware.verifyJWT, vatRoutes);
+app.use('/user',authMiddleware.verifyJWT,userRoutes);
+app.use('/vat',authMiddleware.verifyJWT, vatRoutes);
+app.use('/purchase-order',authMiddleware.verifyJWT,purchaseRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
