@@ -45,8 +45,8 @@ async function updateLocation(req,res){
         if(!location){
             return res.status(404).json({message: 'Location not found'});
         }
-        await Location.update(req.body, { where: { id: req.params.id } });
-        res.status(200).json(location);
+        const updatedLocation = await Location.update(req.body, { where: { id: req.params.id } });
+        res.status(200).json(updatedLocation);
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
     }

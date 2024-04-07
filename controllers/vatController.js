@@ -16,8 +16,9 @@ async function updateVAT(req,res){
         if(!vat){
             return res.status(404).json({message: 'VAT not found'});
         }
-        await db.vat.update(req.body,{where: {id: req.params.id}});
-        return res.status(200).json(vat);
+        const updatedVAT = await db.vat.update(req.body,{where: {id: req.params.id}});
+        
+        return res.status(200).json(updatedVAT);
     }catch{
         res.status(500).json({ message: 'Internal server error' });
     }

@@ -30,8 +30,8 @@ async function updatePOS(req,res){
         if(!pos){
             return res.status(404).json({message: 'Storage not found'});
         }
-        await POS.update(req.body, { where: { id: req.params.id } });
-        return res.status(200).json(pos);
+        const updatedPOS = await POS.update(req.body, { where: { id: req.params.id } });
+        return res.status(200).json(updatedPOS);
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
     }
