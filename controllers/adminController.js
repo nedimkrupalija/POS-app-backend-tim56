@@ -98,9 +98,4 @@ async function createAdministrator(req, res) {
 }
 
 
-
-
-
-
-
 module.exports = { getUsers, getAdministrators, updateUser, updateAdministrator, deleteUser, deleteAdministrator, createUser, createAdministrator};

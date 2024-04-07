@@ -2,6 +2,7 @@ const db = require('../config/db.js');
 
 const Location = db.location
 const POS = db.pos
+const Table = db.table;
 
 async function getLocations(req,res){
     try {
@@ -79,4 +80,19 @@ async function getTablesForLocation(req,res){
     }
 }
 
-module.exports = {getLocations,getLocationsUnique,createLocation,updateLocation,deleteLocation, getTablesForLocation};
+async function createTablesForLocation (req,res){
+    const id = req.params.id;
+    const { tables } = req.body;
+    const location = await Location.findByPk(id);
+    if (!location) {
+        return res.status(404).json({ message: 'Location not found' });
+    }
+    try {
+    const createdTables = await Table.bulkCreate(tables.map(table => ({ ...table, LocationId: id })));
+    res.status(201).json(createdTables);
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+module.exports = {getLocations,getLocationsUnique,createLocation,updateLocation,deleteLocation, getTablesForLocation, createTablesForLocation};

@@ -13,5 +13,6 @@ router.post('/',adminMiddleware,locationsController.createLocation);
 router.put('/:id',adminMiddleware,locationsController.updateLocation);
 router.delete('/:id',adminMiddleware,locationsController.deleteLocation);
 router.get('/:id/tables',adminMiddleware,locationsController.getTablesForLocation);
+router.post('/:id/tables',adminMiddleware,locationsController.createTablesForLocation);
 
 module.exports = router
