@@ -9,8 +9,6 @@ const db = require('./config/db.js');
 const cors = require('cors');
 const PORT = process.env.PORT || 3000
 
-
-
 const authRoutes = require('./routes/authRoutes');
 const authMiddleware = require('./middleware/authMiddleware.js');
 
@@ -20,6 +18,7 @@ const locationRoutes = require('./routes/locationRoutes.js')
 const storageRoutes = require('./routes/storageRoutes.js')
 const posRoutes = require('./routes/posRoutes.js')
 const itemRoutes = require('./routes/itemRoutes.js');
+const userRoutes = require('./routes/userRoutes.js');
 const vatRoutes = require('./routes/vatRoutes.js');
 
 
@@ -42,7 +41,7 @@ app.use('/storage',authMiddleware.verifyJWT,storageRoutes);
 app.use('/pos',authMiddleware.verifyJWT,posRoutes)
 app.use('/item',authMiddleware.verifyJWT,itemRoutes);
 app.use('/orders',authMiddleware.verifyJWT,orderRoutes);
-app.use('/vat',authMiddleware.verifyJWT, vatRoutes);
+app.use('/user',authMiddleware.verifyJWT,userRoutes);app.use('/vat',authMiddleware.verifyJWT, vatRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

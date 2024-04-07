@@ -14,6 +14,7 @@ db.order = require('../models/Order.js')(sequelize,Sequelize);
 db.pos = require('../models/POS.js')(sequelize,Sequelize);
 db.location = require('../models/Location.js')(sequelize,Sequelize);
 db.storageItem = require('../models/StorageItem.js')(sequelize,Sequelize);
+db.table = require('../models/Table.js')(sequelize,Sequelize);
 db.vat = require('../models/VAT.js')(sequelize,Sequelize);
 
 
@@ -37,5 +38,14 @@ db.pos.belongsTo(db.location);
 
 db.order.belongsTo(db.storage);
 db.storage.hasMany(db.order);
+
+db.user.belongsTo(db.location);
+db.location.hasMany(db.user);
+
+db.table.belongsTo(db.user);
+db.user.hasMany(db.table);
+
+db.table.belongsTo(db.location);
+db.location.hasMany(db.table);
 
 module.exports = db;
