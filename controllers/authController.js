@@ -14,7 +14,7 @@ function login(req, res) {
                     .then(match => {
                         if (match) {
                             const token = generateJwtToken(foundUser);
-                            res.status(200).json({ token: token, phoneNumber: foundUser.phoneNumber, location : foundUser.Location});
+                            res.status(200).json({ userId : foundUser.id, token: token, phoneNumber: foundUser.phoneNumber, location : foundUser.Location});
                         } else {
                             res.status(400).json({ message: 'Invalid password' });
                         }
