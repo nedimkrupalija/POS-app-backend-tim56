@@ -9,10 +9,11 @@ async function createPurchaseOrder (req,res) {
         const itemIds = items.map(item => item.id);
 
         const ItemList = await Item.findAll(({where: {id: itemIds}}));
+        
         let total = 0,totalVat = 0;
       //  const vat = 0.2; // used for test, until issue 66 isn't done
 
-        ItemList.forEach(item => {
+        ItemList.array.forEach(item => {
             const selectedItem = items.find(selectedItem => selectedItem.id === item.id);
             total += selectedItem.quantity * item.sellingPrice ;
         });
@@ -66,7 +67,7 @@ async function updatePurchaseOrder(req,res){
         let total = 0,totalVat = 0;
         //  const vat = 0.2; // used for test, until issue 66 isn't done
   
-          ItemList.forEach(item => {
+        itemList.forEach(item => {
               const selectedItem = items.find(selectedItem => selectedItem.id === item.id);
               total += selectedItem.quantity * item.sellingPrice ;
           });
