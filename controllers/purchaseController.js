@@ -13,7 +13,7 @@ async function createPurchaseOrder (req,res) {
             where: {id: itemIds},
             include: [{model: VAT}]
     });
-
+        console.log(itemList);
         let total = 0,totalVat = 0;
   
         itemList.forEach(item => {
@@ -28,7 +28,7 @@ async function createPurchaseOrder (req,res) {
           const grandTotal = total + totalVat;
 
           const purchaseOrder = await Purchase.create({
-            items: items,
+            items: itemList,
             tableId: tableId,
             totals: total,
             vat: totalVat,
@@ -43,7 +43,9 @@ async function createPurchaseOrder (req,res) {
 
 async function getAllPurchaseOrders(req,res){
     try{
-        const purchaseOrders = await Purchase.findAll();
+        const purchaseOrders = await Purchase.findAll({
+            include: [{model: Item}]
+        });
         res.status(200).json(purchaseOrders);
     }catch{
         res.status(500).json({message: 'Internal server error'});
@@ -53,7 +55,9 @@ async function getAllPurchaseOrders(req,res){
 
 async function getPurchaseOrderById(req,res){
     try{
-        const purchaseOrder = await Purchase.findByPk(req.params.id);
+        const purchaseOrder = await Purchase.findByPk(req.params.id,{
+            include: [{model: Item}]
+        });
         if(!purchaseOrder){
             res.status(404).json({message: 'Purshase order not found'});
         }else{
@@ -94,7 +98,7 @@ async function updatePurchaseOrder(req,res){
         }
 
         await purchaseOrder.update({
-            items: items,
+            items: itemList,
             tableId: tableId,
             totals: total,
             vat: totalVat,
