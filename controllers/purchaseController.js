@@ -4,48 +4,56 @@ const Item = db.item
 const Purchase = db.purchase
 const VAT = db.vat
 
-async function createPurchaseOrder (req,res) {
-    try{
-        const {items, tableId} = req.body;
+async function createPurchaseOrder(req, res) {
+    try {
+        const { items, tableId } = req.body;
         const itemIds = items.map(item => item.id);
 
         const itemList = await Item.findAll({
-            where: {id: itemIds},
-            include: [{model: VAT}]
-    });
-        console.log(itemList);
-        let total = 0,totalVat = 0;
-  
-        itemList.forEach(item => {
+            where: { id: itemIds },
+            include: [{ model: VAT }]
+        });
+
+        const itemListWithQuantity = itemList.map(item => {
             const selectedItem = items.find(selectedItem => selectedItem.id === item.id);
+            if (selectedItem) {
+                return { ...item.toJSON(), quantity: selectedItem.quantity };
+            }
+            return item.toJSON();
+        });
+
+        let total = 0, totalVat = 0;
+
+        itemListWithQuantity.forEach(item => {
             const vatRate = item.VAT.percent;
-            const itemTotal = selectedItem.quantity * item.sellingPrice;
+            const itemTotal = item.quantity * item.sellingPrice;
             const itemVat = itemTotal * (vatRate / 100);
 
             total += itemTotal;
             totalVat += itemVat;
-          });
-          const grandTotal = total + totalVat;
+        });
 
-          const purchaseOrder = await Purchase.create({
-            items: itemList,
+        const grandTotal = total + totalVat;
+
+        const purchaseOrder = await Purchase.create({
+            items: itemListWithQuantity,
             tableId: tableId,
             totals: total,
             vat: totalVat,
             grandTotal: grandTotal
         });
+
         res.status(200).json(purchaseOrder);
 
-    }catch{
-        res.status(500).json({message: 'Internal server error'});
+    } catch {
+        res.status(500).json({ message: 'Internal server error' });
     }
 }
 
+
 async function getAllPurchaseOrders(req,res){
     try{
-        const purchaseOrders = await Purchase.findAll({
-            include: [{model: Item}]
-        });
+        const purchaseOrders = await Purchase.findAll();
         res.status(200).json(purchaseOrders);
     }catch{
         res.status(500).json({message: 'Internal server error'});
@@ -55,9 +63,7 @@ async function getAllPurchaseOrders(req,res){
 
 async function getPurchaseOrderById(req,res){
     try{
-        const purchaseOrder = await Purchase.findByPk(req.params.id,{
-            include: [{model: Item}]
-        });
+        const purchaseOrder = await Purchase.findByPk(req.params.id);
         if(!purchaseOrder){
             res.status(404).json({message: 'Purshase order not found'});
         }else{
@@ -68,8 +74,8 @@ async function getPurchaseOrderById(req,res){
     }
 }
 
-async function updatePurchaseOrder(req,res){
-    try{
+async function updatePurchaseOrder(req, res) {
+    try {
         const { items, tableId } = req.body;
         const itemIds = items.map(item => item.id);
 
@@ -78,12 +84,19 @@ async function updatePurchaseOrder(req,res){
             include: [{ model: VAT }]
         });
 
+        const itemListWithQuantity = itemList.map(item => {
+            const selectedItem = items.find(selectedItem => selectedItem.id === item.id);
+            if (selectedItem) {
+                return { ...item.toJSON(), quantity: selectedItem.quantity };
+            }
+            return item.toJSON();
+        });
+
         let total = 0, totalVat = 0;
 
-        itemList.forEach(item => {
-            const selectedItem = items.find(selectedItem => selectedItem.id === item.id);
+        itemListWithQuantity.forEach(item => {
             const vatRate = item.VAT.percent;
-            const itemTotal = selectedItem.quantity * item.sellingPrice;
+            const itemTotal = item.quantity * item.sellingPrice;
             const itemVat = itemTotal * (vatRate / 100);
 
             total += itemTotal;
@@ -98,7 +111,7 @@ async function updatePurchaseOrder(req,res){
         }
 
         await purchaseOrder.update({
-            items: itemList,
+            items: itemListWithQuantity,
             tableId: tableId,
             totals: total,
             vat: totalVat,
@@ -107,12 +120,10 @@ async function updatePurchaseOrder(req,res){
 
         res.status(200).json(purchaseOrder);
 
-          
-    }catch{
-        res.status(500).json({message: 'Internal server error'});
+    } catch {
+        res.status(500).json({ message: 'Internal server error' });
     }
 }
-
 async function deletePurchaseOrder(req,res){
     try{
         const purchaseOrder = await Purchase.findByPk(req.params.id);
