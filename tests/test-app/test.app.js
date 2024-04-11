@@ -22,12 +22,12 @@ app.use(session({
     }
 }));
 app.use('/auth', authRoutes);
-app.use('/admin',authMiddleware, adminRoutes);
+app.use('/admin',authMiddleware.verifyJWT, adminRoutes);
 
 app.use('/item', itemRoutes);
 
-app.use('/orders',authMiddleware,orderRoutes);
-app.use('/location',authMiddleware,locationRoutes);
-app.use('/storage',authMiddleware,storageRoutes);
+app.use('/orders',authMiddleware.verifyJWT,orderRoutes);
+app.use('/location',authMiddleware.verifyJWT,locationRoutes);
+app.use('/storage',authMiddleware.verifyJWT,storageRoutes);
 
 module.exports=app;
