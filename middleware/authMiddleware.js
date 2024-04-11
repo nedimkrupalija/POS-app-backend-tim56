@@ -23,7 +23,7 @@ const verifyJWT = (req, res, next) => {
 }
 
 const addJwtHeader = (req,res,next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://pos-app-backend-tim56.onrender.com');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Expose-Headers', 'Authorization');
         res.setHeader('Authorization', `${req.headers["Authorization"]}`);
         next();
