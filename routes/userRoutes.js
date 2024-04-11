@@ -9,5 +9,5 @@ const router = express.Router();
 router.use(authMiddleware.addJwtHeader);
 
 router.post('/tables',userController.assignTables);
-
+router.delete('/tables',userController.unassignTabels);
 module.exports = router;
