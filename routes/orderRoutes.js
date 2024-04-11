@@ -8,7 +8,7 @@ const authMiddleware = require('../middleware/authMiddleware.js');
 const router = express.Router();
 router.use(authMiddleware.addJwtHeader);
 
-router.get('/',  authAdminMiddleware, orderController.getOrders);
+router.get('/',authAdminMiddleware,orderController.getOrders);
 router.post('/', authAdminMiddleware, orderController.createOrder);
 router.put('/:id', authAdminMiddleware, orderController.updateOrder);
 router.delete('/:id', authAdminMiddleware, orderController.deleteOrder);
