@@ -7,10 +7,12 @@ const authMiddleware = require('../middleware/authMiddleware.js');
 const router = express.Router();
 router.use(authMiddleware.addJwtHeader);
 
-router.use(authAdminMiddleware);
-router.route('/').get(itemController.getItems).post(itemController.createItem);
+router.get('/', itemController.getItems)
+router.post('/', authAdminMiddleware, itemController.createItem)
 
-router.route('/:id').get(itemController.getUniqueItem).put(itemController.updateItem).delete(itemController.deleteItem);
+router.get('/:id',itemController.getUniqueItem)
+router.put('/:id',authAdminMiddleware, itemController.updateItem)
+router.delete('/:id',authAdminMiddleware, itemController.deleteItem);
 
 module.exports = router;
 

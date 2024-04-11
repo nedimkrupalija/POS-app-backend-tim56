@@ -6,10 +6,10 @@ const authMiddleware = require('../middleware/authMiddleware.js');
 const router = express.Router();
 router.use(authMiddleware.addJwtHeader);
 
-router.get('/:id',adminMiddleware,storageController.getStorageUnique);
-router.get('/',adminMiddleware,storageController.getStorage);
+router.get('/:id',storageController.getStorageUnique);
+router.get('/',storageController.getStorage);
 router.get('/:id/status',adminMiddleware,storageController.getStorageStatus);
-router.get('/:id/items',adminMiddleware, storageController.getAvailableItemsForStorage);
+router.get('/:id/items', storageController.getAvailableItemsForStorage);
 
 router.post('/',adminMiddleware,storageController.createStorage);
 
