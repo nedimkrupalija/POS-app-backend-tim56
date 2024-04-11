@@ -28,8 +28,8 @@ async function updateUser(req, res) {
             return res.status(404).json({ message: 'User not found' });
         }
         req.body.password = await bcrypt.hash(req.body.password, 10);
-        await user.update(req.body);
-        return res.status(200).json(user);
+        const updatedUser = await user.update(req.body);
+        return res.status(200).json(updatedUser);
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
     }
@@ -42,8 +42,8 @@ async function updateAdministrator(req, res) {
             return res.status(404).json({ message: 'Admin not found' });
         }
         req.body.password = await bcrypt.hash(req.body.password, 10);
-        await admin.update(req.body);
-        return res.status(200).json(admin);
+        const updatedAdmin = await admin.update(req.body);
+        return res.status(200).json(updatedAdmin);
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
     }
@@ -96,11 +96,6 @@ async function createAdministrator(req, res) {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
-
-
-
-
-
 
 
 module.exports = { getUsers, getAdministrators, updateUser, updateAdministrator, deleteUser, deleteAdministrator, createUser, createAdministrator};

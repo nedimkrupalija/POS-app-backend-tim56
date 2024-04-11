@@ -10,7 +10,7 @@ const verifyJWT = (req, res, next) => {
         const decoded = jwt.verify(token, JWT_SECRET)
         if (decoded.role === 'admin' || decoded.role === "superadmin") { //extend jwt expiration time for 30 minutes
             const extendedToken = jwt.sign({ ...decoded, exp: decoded.exp + (30 * 60) }, JWT_SECRET)
-
+            
             req.headers["Authorization"] = extendedToken
         }
         req.userData = decoded
@@ -23,6 +23,8 @@ const verifyJWT = (req, res, next) => {
 }
 
 const addJwtHeader = (req,res,next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://pos-app-backend-tim56.onrender.com');
+    res.setHeader('Access-Control-Expose-Headers', 'Authorization');
         res.setHeader('Authorization', `${req.headers["Authorization"]}`);
         next();
 };

@@ -7,15 +7,14 @@ function login(req, res) {
     const user = req.body;
     const whereCondition = user.phoneNumber ? { phoneNumber: user.phoneNumber } : { username: user.username };
 
-    db.user.findOne({ where: whereCondition })
+    db.user.findOne({ where: whereCondition , include : db.location})
         .then(foundUser => {
             if (foundUser && foundUser.role === user.role || (foundUser.role === 'superadmin' && user.role === 'admin')) {
                 bcrypt.compare(req.body.password, foundUser.password)
                     .then(match => {
                         if (match) {
                             const token = generateJwtToken(foundUser);
-                            req.session.role = foundUser.role;
-                            res.status(200).json({ token: token, phoneNumber: foundUser.phoneNumber});
+                            res.status(200).json({ userId : foundUser.id, token: token, phoneNumber: foundUser.phoneNumber, location : foundUser.Location});
                         } else {
                             res.status(400).json({ message: 'Invalid password' });
                         }

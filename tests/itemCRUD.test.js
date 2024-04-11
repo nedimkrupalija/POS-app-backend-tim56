@@ -50,7 +50,7 @@ describe('Item CRUD functions', () => {
 
             expect(res.statusCode).toEqual(200);
             expect(res.body).toHaveProperty('length');
-            expect(res.body).toHaveProperty('VAT');
+            expect(res.body[0]).toHaveProperty('VAT');
         });
     });
 

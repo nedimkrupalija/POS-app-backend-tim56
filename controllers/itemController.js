@@ -6,8 +6,8 @@ const Location = db.location;
 async function getItems(req, res) {
     try {
         const items = await Item.findAll({ 
-            include: db.location,
-            attributes: { exclude: ['LocationId'] } 
+            include: [db.location, db.vat],
+            attributes: { exclude: ['LocationId', 'VATId'] } 
         });
         res.status(200).json(items);
     } catch (error) {
@@ -19,8 +19,8 @@ async function getItems(req, res) {
 async function getUniqueItem(req, res) {
     try {
         const item = await Item.findByPk(req.params.id, { 
-            include: db.location,
-            attributes: { exclude: ['LocationId'] } 
+            include: [db.location, db.vat],
+            attributes: { exclude: ['LocationId', 'VATId'] } 
         });
 
         if (!item) {
