@@ -26,4 +26,22 @@ async function assignTables(req,res){
     }
 }
 
-module.exports={assignTables}
+async function unassignTabels(req, res){
+    try {
+        const token = req.headers["authorization"]
+        const decoded = jwt.decode(token);
+        const userId =  decoded.id;
+        const {tables} = req.body;
+        const user = await User.findByPk(userId);
+        tables.forEach(async element => {
+            await Table.update({ UserId: null }, { where: { id: element, LocationId: user.LocationId } });
+        });
+        return res.status(200).json({message: 'Tables unassigned successfully'});
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'Internal server error' }); 
+    }
+}
+
+
+module.exports={assignTables, unassignTabels}
