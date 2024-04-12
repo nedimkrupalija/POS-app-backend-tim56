@@ -1,7 +1,9 @@
 const bcrypt = require('bcryptjs');
-
 const db = require('../config/db.js');
+
 const generateJwtToken = require('./jwtController.js');
+
+const { generateServerErrorResponse } = require('../utils/messages.js');
 
 function login(req, res) {
     const user = req.body;
@@ -19,16 +21,15 @@ function login(req, res) {
                             res.status(400).json({ message: 'Invalid password' });
                         }
                     })
-                    .catch(err => {
-                        
-                        res.status(500).json({ message: 'Internal server error' });
+                    .catch(error => {
+                        res.status(500).json(generateServerErrorResponse(error));
                     });
             } else {
                 res.status(400).json({ message: 'User not found' });
             }
         })
-        .catch(err => {
-            res.status(500).json({ message: 'Internal server error' });
+        .catch(error => {
+            res.status(500).json(generateServerErrorResponse(error));
         });
 }
 
