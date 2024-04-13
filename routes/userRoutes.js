@@ -1,13 +1,15 @@
 const express = require('express');
 
-const adminMiddleware = require('../middleware/authAdmin.js');
-const authMiddleware = require('../middleware/authMiddleware.js');
-const storageController = require('../controllers/storageController.js');
+const router = express.Router();
+
 const userController = require('../controllers/userController.js');
 
-const router = express.Router();
+const adminMiddleware = require('../middleware/authAdmin.js');
+const authMiddleware = require('../middleware/authMiddleware.js');
+
 router.use(authMiddleware.addJwtHeader);
 
 router.post('/tables',userController.assignTables);
 router.delete('/tables',userController.unassignTabels);
+
 module.exports = router;
