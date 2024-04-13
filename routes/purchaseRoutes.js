@@ -7,8 +7,6 @@ const purchaseController = require('../controllers/purchaseController.js');
 const adminMiddleware = require('../middleware/authAdmin.js');
 const authMiddleware = require('../middleware/authMiddleware.js');
 
-//router.use(authMiddleware.addJwtHeader);
-
 router.get('/',purchaseController.getAllPurchaseOrders);
 router.post('/',purchaseController.createPurchaseOrder);
 
