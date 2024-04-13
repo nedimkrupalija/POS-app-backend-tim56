@@ -1,6 +1,3 @@
-const session = require('express-session');
-const cors = require('cors');
-
 const app = require('./config/app.js');
 const db = require('./config/db.js');
 
