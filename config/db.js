@@ -1,7 +1,11 @@
 const Sequelize = require('sequelize')
 const mysql2 = require('mysql2');
 
-const sequelize = new Sequelize("db_aa6c5b_sipos","aa6c5b_sipos","sipostim56",{host:"MYSQL6008.site4now.net",dialect:"mysql",dialectModule:mysql2,logging:false});
+const { DB_HOST, DB_USER, DB_PASS, DB_NAME } = require('../constants.js');
+
+const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS,
+    { host: DB_HOST, dialect: "mysql", dialectModule: mysql2, logging: false }
+);
 
 const db = {};
 
