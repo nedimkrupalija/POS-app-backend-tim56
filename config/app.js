@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 
 const authRoutes =      require('../routes/authRoutes');
 const authMiddleware =    require('../middleware/authMiddleware.js');
@@ -12,10 +13,19 @@ const itemRoutes =      require('../routes/itemRoutes.js');
 const userRoutes =      require('../routes/userRoutes.js');
 const vatRoutes =       require('../routes/vatRoutes.js');
 const purchaseRoutes =  require('../routes/purchaseRoutes.js');
+const cors = require("cors");
 
 const app = express();
 
 app.use(express.json());
+
+app.use(session({
+    resave: true,
+    saveUninitialized: true,
+    secret: "secret"
+}));
+
+app.use(cors());
 
 app.use('/auth',            authRoutes);
 app.use('/admin',           authMiddleware.verifyJWT, adminRoutes);

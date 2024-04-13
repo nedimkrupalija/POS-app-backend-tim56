@@ -6,14 +6,6 @@ const db = require('./config/db.js');
 
 db.sequelize.sync();
 
-app.use(session({
-    resave: true,
-    saveUninitialized: true,
-    secret: "secret"
-}));
-
-app.use(cors());
-
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
