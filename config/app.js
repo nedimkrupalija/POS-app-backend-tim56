@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require('express-session');
+const cors = require("cors");
 
 const authRoutes =      require('../routes/authRoutes');
 const authMiddleware =    require('../middleware/authMiddleware.js');
@@ -13,7 +14,6 @@ const itemRoutes =      require('../routes/itemRoutes.js');
 const userRoutes =      require('../routes/userRoutes.js');
 const vatRoutes =       require('../routes/vatRoutes.js');
 const purchaseRoutes =  require('../routes/purchaseRoutes.js');
-const cors = require("cors");
 
 const app = express();
 
