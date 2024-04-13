@@ -1,31 +1,25 @@
-
 const request = require('supertest');
-const app = require('./test-app/test.app.js');
-const { Sequelize } = require('sequelize');
-const mysql2 = require('mysql2');
+const { authenticateTestUser } = require("../utils/testHelper");
 
-const sequelize = new Sequelize("db_aa6c5b_sipos", "aa6c5b_sipos", "sipostim56", { host: "MYSQL6008.site4now.net", dialect: "mysql", dialectModule: mysql2, logging: false });
+const app = require('./test-app/test.app.js');
+const db = require('../config/db.js');
+
+const sequelize = db.sequelize;
 
 describe('User CRUD functions', () => {
     let token;
     let cookie;
+
     let createdUserId;
+
     beforeAll(async () => {
         await sequelize.authenticate();
     });
 
     beforeAll(async () => {
-        const response = await request(app)
-            .post('/auth/login')
-            .send({
-                username: 'testni-admin',
-                role: 'admin',
-                password: 'test'
-            }).then(response => {
-                cookie = response.headers['set-cookie'];
-                token = response.body.token;
-            });
+        ({ token, cookie } = await authenticateTestUser(app));
     });
+
     describe('createUser', () => {
         it('should create a new user', async () => {
             const response = await request(app)
@@ -38,7 +32,9 @@ describe('User CRUD functions', () => {
                     phoneNumber: '387603137056',
                     role: 'user'
                 });
+
             createdUserId = response.body.id;
+
             expect(response.statusCode).toBe(201);
             expect(response.body).toHaveProperty('username', 'testuser');
             expect(response.body).toHaveProperty('password');
@@ -46,17 +42,20 @@ describe('User CRUD functions', () => {
             expect(response.body).toHaveProperty('role', 'user');
         });
     });
+
     describe('getUsers', () => {
         it('should get all users', async () => {
             const response = await request(app)
                 .get('/admin/users')
                 .set('Authorization', `${token}`)
                 .set('Cookie', cookie);
+
             expect(response.statusCode).toBe(200);
             expect(response.body.length).toBeGreaterThan(0);
             expect(response.body.some(user => user.id === createdUserId)).toBe(true);
         });
     });
+
     describe('updateUser', () => {
         it('should update a user', async () => {
             const response = await request(app)
@@ -69,6 +68,7 @@ describe('User CRUD functions', () => {
                     phoneNumber: '387613137056',
                     role: 'user'
                 });
+
             expect(response.statusCode).toBe(200);
             expect(response.body).toHaveProperty('username', 'testuser1');
             expect(response.body).toHaveProperty('password');
@@ -86,16 +86,19 @@ describe('User CRUD functions', () => {
                     phoneNumber: '387613137056',
                     role: 'admin'
                 });
+
             expect(response.statusCode).toBe(404);
             expect(response.body).toHaveProperty('message', 'User not found');
         });
     });
+
     describe('deleteUser', () => {
         it('should delete a user', async () => {
             const response = await request(app)
                 .delete('/admin/users/' + createdUserId)
                 .set('Authorization', `${token}`)
                 .set('Cookie', cookie);
+
             expect(response.statusCode).toBe(200);
             expect(response.body).toHaveProperty('message', 'User sucessfully deleted');
         });
@@ -105,13 +108,14 @@ describe('User CRUD functions', () => {
                 .delete('/admin/users/' + "54353453453453435")
                 .set('Authorization', `${token}`)
                 .set('Cookie', cookie);
+
             expect(response.statusCode).toBe(404);
             expect(response.body).toHaveProperty('message', 'User not found');
         });
         
     });
+
     afterAll(async () => {
         await sequelize.close();
     });
-
 });

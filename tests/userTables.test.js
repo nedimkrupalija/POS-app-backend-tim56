@@ -1,10 +1,14 @@
 const request = require('supertest');
 const express = require('express');
+const { authenticateTestUser } = require("../utils/testHelper");
+
 const userRoutes = require('../routes/userRoutes.js');
 const authRoutes = require('../routes/authRoutes.js');
+
 const db = require('../config/db.js');
 
 const app = express();
+
 app.use(express.json());
 
 app.use('/', userRoutes);
@@ -15,17 +19,7 @@ describe('POST /tables', () => {
     let token;
 
     beforeAll(async () => {
-        await request(app)
-            .post('/auth/login')
-            .send({
-                username: 'testni-admin',
-                role: 'admin',
-                password: 'test'
-            })
-            .then(response => {
-                cookie = response.headers['set-cookie'];
-                token = response.body.token;
-            });
+        ({ token, cookie } = await authenticateTestUser(app));
     });
 
     afterEach(() => {
