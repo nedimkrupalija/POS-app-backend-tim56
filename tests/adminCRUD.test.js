@@ -1,31 +1,25 @@
-
 const request = require('supertest');
-const app = require('./test-app/test.app.js');
-const { Sequelize } = require('sequelize');
-const mysql2 = require('mysql2');
+const { authenticateTestUser } = require("../utils/testHelper");
 
-const sequelize = new Sequelize("db_aa6c5b_sipos", "aa6c5b_sipos", "sipostim56", { host: "MYSQL6008.site4now.net", dialect: "mysql", dialectModule: mysql2, logging: false });
+const app = require('./test-app/test.app.js');
+const db = require('../config/db.js');
+
+const sequelize = db.sequelize;
 
 describe('Admin CRUD functions', () => {
     let token;
     let cookie;
+
     let createdAdminId;
-    beforeAll(async () => {
-        await sequelize.authenticate();
-    });
 
     beforeAll(async () => {
-        const response = await request(app)
-            .post('/auth/login')
-            .send({
-                username: 'neda',
-                role: 'admin',
-                password: 'test'
-            }).then(response => {
-                cookie = response.headers['set-cookie'];
-                token = response.body.token;
-            });
+        ({ token, cookie } = await authenticateTestUser(app));
     });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
     describe('createAdmin', () => {
         it('should create a new admin', async () => {
             const response = await request(app)
@@ -38,7 +32,9 @@ describe('Admin CRUD functions', () => {
                     phoneNumber: '387603137056',
                     role: 'admin'
                 });
+
             createdAdminId = response.body.id;
+
             expect(response.statusCode).toBe(201);
             expect(response.body).toHaveProperty('username', 'testadmin');
             expect(response.body).toHaveProperty('password');
@@ -46,17 +42,20 @@ describe('Admin CRUD functions', () => {
             expect(response.body).toHaveProperty('role', 'admin');
         });
     });
+
     describe('getAdmins', () => {
         it('should get all admins', async () => {
             const response = await request(app)
                 .get('/admin/administrators')
                 .set('Authorization', `${token}`)
                 .set('Cookie', cookie);
+
             expect(response.statusCode).toBe(200);
             expect(response.body.length).toBeGreaterThan(0);
             expect(response.body.some(admin => admin.id === createdAdminId)).toBe(true);
         });
     });
+
     describe('updateAdmin', () => {
         it('should update an admin', async () => {
             const response = await request(app)
@@ -69,12 +68,14 @@ describe('Admin CRUD functions', () => {
                     phoneNumber: '387613137056',
                     role: 'admin'
                 });
+
             expect(response.statusCode).toBe(200);
             expect(response.body).toHaveProperty('username', 'testadmin1');
             expect(response.body).toHaveProperty('password');
             expect(response.body).toHaveProperty('phoneNumber', '387613137056');
             expect(response.body).toHaveProperty('role', 'admin');
         });
+
         it('should not update non existing admin', async () => {
             const response = await request(app)
                 .put('/admin/administrators/' + "45654646456")
@@ -86,16 +87,19 @@ describe('Admin CRUD functions', () => {
                     phoneNumber: '387613137056',
                     role: 'admin'
                 });
+
             expect(response.statusCode).toBe(404);
             expect(response.body).toHaveProperty('message', 'Admin not found');
         });
     });
+
     describe('deleteAdmin', () => {
         it('should delete an admin', async () => {
             const response = await request(app)
                 .delete('/admin/administrators/' + createdAdminId)
                 .set('Authorization', `${token}`)
                 .set('Cookie', cookie);
+
             expect(response.statusCode).toBe(200);
             expect(response.body).toHaveProperty('message', 'Admin sucessfully deleted');
         });
@@ -105,13 +109,14 @@ describe('Admin CRUD functions', () => {
                 .delete('/admin/administrators/' + "54353453453453435")
                 .set('Authorization', `${token}`)
                 .set('Cookie', cookie);
+
             expect(response.statusCode).toBe(404);
             expect(response.body).toHaveProperty('message', 'Admin not found');
         });
-        
+
     });
+
     afterAll(async () => {
         await sequelize.close();
     });
-
 });

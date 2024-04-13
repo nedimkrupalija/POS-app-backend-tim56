@@ -1,10 +1,7 @@
 const Sequelize = require("sequelize");
 
-
-module.exports = function(sequelize,DataTypes){
-    const Location = sequelize.define("Location",{
-        name:Sequelize.STRING,
-        adress:Sequelize.STRING,
-    })
-    return Location;
-};
+module.exports = (sequelize, DataTypes) =>
+    sequelize.define("Location", {
+        name:   Sequelize.STRING,
+        adress: Sequelize.STRING,
+    });

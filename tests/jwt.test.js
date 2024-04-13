@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const generateJwtToken = require('../controllers/jwtController');
 const verifyJWT = require('../middleware/authMiddleware');
 
-const JWT_SECRET = require('../constants.js').JWT_SECRET
+const JWT_SECRET = require('../utils/constants.js').JWT_SECRET
 
 describe('JWT Authentication and Authorization Middleware', () => {
 
