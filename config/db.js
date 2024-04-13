@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 const mysql2 = require('mysql2');
 
-const { DB_CRED } = require('../constants.js');
+const { DB_CRED } = require('../utils/constants.js');
 
 const sequelize = new Sequelize(DB_CRED.name, DB_CRED.user, DB_CRED.pass,
     { host: DB_CRED.host, dialect: "mysql", dialectModule: mysql2, logging: false }
