@@ -1,6 +1,7 @@
 const request = require('supertest');
 const app = require('./test-app/test.app.js');
 const db = require('../config/db');
+const {authenticateTestUser} = require("../utils/testHelper");
 
 const Item = db.item;
 const Location = db.location;
@@ -21,16 +22,7 @@ describe('Item CRUD functions', () => {
     });
 
     beforeAll(async () => {
-        await request(app)
-            .post('/auth/login')
-            .send({
-                username: 'testni-admin',
-                role: 'admin',
-                password: 'test'
-            }).then(response => {
-                cookie = response.headers['set-cookie'];
-                token = response.body.token;
-            });
+        ({ token, cookie } = await authenticateTestUser(app));
     });
 
     beforeAll(async () => {

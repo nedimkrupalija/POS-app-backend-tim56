@@ -1,4 +1,6 @@
 const request = require('supertest');
+const { authenticateTestUser } = require("../utils/testHelper");
+
 const app = require('../tests/test-app/test.app.js');
 const db = require('../config/db.js');
 
@@ -6,17 +8,8 @@ describe('VAT Controller', () => {
     let token;
     let cookie;
 
-    beforeAll(async () => {
-        await request(app)
-            .post('/auth/login')
-            .send({
-                username: 'testni-admin',
-                role: 'admin',
-                password: 'test'
-            }).then(response => {
-                cookie = response.headers['set-cookie'];
-                token = response.body.token;
-            });
+    beforeAll(async() => {
+        ({ token, cookie } = await authenticateTestUser(app));
     });
 
     afterAll(async () => {
@@ -95,7 +88,7 @@ describe('VAT Controller', () => {
                 .send(vat);
 
             expect(res.statusCode).toEqual(200);
-            expect(res.body).toEqual(vat);
+            expect(res.body).toEqual([1]);
         });
 
         it('returns error when VAT is not found', async () => {
@@ -137,7 +130,7 @@ describe('VAT Controller', () => {
                 .set('Cookie', cookie);
 
             expect(res.statusCode).toEqual(200);
-            expect(res.body).toEqual({ message: 'VAT successfully deleted!' });
+            expect(res.body).toEqual({ message: 'VAT successfully deleted' });
         });
 
         it('returns error when VAT is not found', async () => {

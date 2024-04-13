@@ -1,9 +1,7 @@
 const Sequelize = require("sequelize");
 
-module.exports = function(sequelize,DataTypes){
-    const VAT = sequelize.define("VAT",{
-        name : Sequelize.STRING,
-        percent : Sequelize.FLOAT
-    })
-    return VAT;
-};
+module.exports = (sequelize, DataTypes) =>
+    sequelize.define("VAT", {
+        name:       Sequelize.STRING,
+        percent:    Sequelize.FLOAT
+    });
