@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 
 
-module.exports = (sequelize,DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
     const Location = sequelize.define("Location",{
         name:Sequelize.STRING,
         adress:Sequelize.STRING,
