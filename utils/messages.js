@@ -7,7 +7,7 @@
  */
 const generateServerErrorResponse = (error = null) => {
     return {
-        message: 'Internal server error' + (error ? `: ${error.message}` : '')
+        message: 'Internal server error' + (error && error.message && error.message.length !== 0 ? `: ${error.message}` : '')
     };
 };
 
