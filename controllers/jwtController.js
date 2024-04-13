@@ -1,6 +1,4 @@
-const jwt = require('jsonwebtoken');
-
-const JWT_SECRET = require('../utils/constants.js').JWT_SECRET
+const jwtHelper = require('../utils/jwtHelper.js');
 
 function generateJwtToken(user) {
     const role = user.role;
@@ -16,9 +14,7 @@ function generateJwtToken(user) {
 
     const expiresIn = role === 'admin' || role === 'superadmin' ? '30m' : untilMidnight; // 30 minutes for admin, until the end of the day for others
 
-    const token = jwt.sign({ id, role, username }, JWT_SECRET, { expiresIn });
-
-    return token;
+    return jwtHelper.sign({ id, role, username }, { expiresIn });
 }
 
 module.exports = generateJwtToken;
