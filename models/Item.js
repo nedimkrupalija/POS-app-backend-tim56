@@ -1,13 +1,10 @@
 const Sequelize = require("sequelize");
 
-module.exports = (sequelize, DataTypes) => {
-    const Item = sequelize.define("Item", {
-        name: Sequelize.STRING,
-        barCode: Sequelize.STRING,
+module.exports = (sequelize, DataTypes) =>
+    sequelize.define("Item", {
+        name:           Sequelize.STRING,
+        barCode:        Sequelize.STRING,
         measurmentUnit: Sequelize.STRING,
-        purchasePrice: Sequelize.FLOAT,
-        sellingPrice: Sequelize.FLOAT,
+        purchasePrice:  Sequelize.FLOAT,
+        sellingPrice:   Sequelize.FLOAT,
     });
-    
-    return Item;
-};

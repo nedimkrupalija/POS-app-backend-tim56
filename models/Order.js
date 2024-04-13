@@ -1,11 +1,7 @@
 const Sequelize = require("sequelize");
 
-
-module.exports = (sequelize, DataTypes) => {
-    const Order = sequelize.define("Order",{
-        status:Sequelize.STRING,
-        date:Sequelize.DATE,
-    })
-
-    return Order;
-};
+module.exports = (sequelize, DataTypes) =>
+    sequelize.define("Order", {
+        status: Sequelize.STRING,
+        date:   Sequelize.DATE,
+    });
