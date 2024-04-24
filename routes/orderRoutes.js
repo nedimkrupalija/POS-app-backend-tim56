@@ -16,6 +16,6 @@ router.put('/:id', authAdminMiddleware, orderController.updateOrder);
 router.delete('/:id', authAdminMiddleware, orderController.deleteOrder);
 
 router.post('/finish/:id', authAdminMiddleware, orderController.finishOrder);
-router.post("/deduct/:id",authAdminMiddleware,orderController.deductFromStorage);
+
 
 module.exports = router;
