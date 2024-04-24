@@ -52,6 +52,7 @@ async function createPurchaseOrder(req, res) {
             tableId: tableId,
             totals: total,
             vat: totalVat,
+            status: 'pending',
             grandTotal: grandTotal
         });
 

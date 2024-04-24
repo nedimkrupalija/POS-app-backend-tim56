@@ -6,5 +6,6 @@ module.exports = (sequelize, DataTypes) =>
         tableId:    Sequelize.INTEGER,
         totals:     Sequelize.INTEGER,
         vat:        Sequelize.FLOAT,
-        grandTotal: Sequelize.FLOAT
+        grandTotal: Sequelize.FLOAT,
+        status:     Sequelize.STRING,
     });
