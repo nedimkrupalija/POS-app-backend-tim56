@@ -117,45 +117,56 @@ async function deleteOrder(req, res) {
 }
 
 async function finishOrder(req, res) {
-    try {
-        const order = await Order.findOne(
-            { where: { id: req.params.id } }
-        );
+  try {
+    const order = await Order.findOne({ where: { id: req.params.id } });
 
-        if (!order) {
-            return res.status(404).json({ message: 'Order not found' });
-        }
-
-        const StorageId = order.StorageId;
-
-        let items = await order.getItems();
-
-        items = items.map(item => item.dataValues);
-
-        for (const item of items) {
-            const ItemId = item.id;
-
-            const quantity = parseInt(item.OrderItem.dataValues.quantity);
-
-            const storageItem = await db.storageItem.findOne(
-                { where: { StorageId, ItemId } }
-            );
-
-            if (storageItem) {
-                const newQuantity = storageItem.quantity + quantity;
-
-                await storageItem.update({ quantity: newQuantity });
-            } else {
-                await db.storageItem.create({ StorageId, ItemId, quantity });
-            }
-        }
-
-        await order.update({ status: 'processed' });
-
-        return res.status(200).json({ message: 'Order sucessfully finished' });
-    } catch (error) {
-        res.status(500).json(generateServerErrorResponse(error));
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
     }
+
+    await order.update({ status: "processed" });
+
+    return res.status(200).json({ message: "Order sucessfully finished" });
+  } catch (error) {
+    res.status(500).json(generateServerErrorResponse(error));
+  }
 }
 
-module.exports = { createOrder, getOrders, updateOrder, deleteOrder, finishOrder };
+
+async function deductFromStorage(req, res) {
+  try {
+    const order = await Order.findOne({ where: { id: req.params.id } });
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    const StorageId = order.StorageId;
+
+    let items = await order.getItems();
+
+    items = items.map((item) => item.dataValues);
+
+    for (const item of items) {
+      const ItemId = item.id;
+
+      const quantity = parseInt(item.OrderItem.dataValues.quantity);
+
+      const storageItem = await db.storageItem.findOne({
+        where: { StorageId, ItemId },
+      });
+
+      if (storageItem) {
+        const newQuantity = storageItem.quantity + quantity;
+
+        await storageItem.update({ quantity: newQuantity });
+      } else {
+        await db.storageItem.create({ StorageId, ItemId, quantity });
+      }
+    }
+    return res.status(200).json({ message: "Items deducted from storage" });
+  } catch (error) {
+    res.status(500).json(generateServerErrorResponse(error));
+  }
+}
+
+module.exports = { createOrder, getOrders, updateOrder, deleteOrder, finishOrder, deductFromStorage };
