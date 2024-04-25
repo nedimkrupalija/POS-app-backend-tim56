@@ -14,5 +14,8 @@ router.get('/:id',purchaseController.getPurchaseOrderById);
 router.put('/:id',purchaseController.updatePurchaseOrder);
 router.delete('/:id',purchaseController.deletePurchaseOrder);
 
+router.put('/status/:id',purchaseController.updatePurchaseStatus);
 
+
+router.get('/location/:id', purchaseController.getPurchaseOrderByLocationId);
 module.exports = router;

@@ -43,9 +43,11 @@ async function calculateTotals(items) {
 
 async function createPurchaseOrder(req, res) {
     try {
-        const { items, tableId } = req.body;
+        const { items, tableId, locationId } = req.body;
 
         const { itemListWithQuantity, total, totalVat, grandTotal } = await calculateTotals(items);
+
+        console.log(locationId)
 
         const purchaseOrder = await Purchase.create({
             items: itemListWithQuantity,
@@ -53,6 +55,7 @@ async function createPurchaseOrder(req, res) {
             totals: total,
             vat: totalVat,
             status: 'pending',
+            LocationId: locationId,
             grandTotal: grandTotal
         });
 
@@ -106,6 +109,7 @@ async function updatePurchaseOrder(req, res) {
             tableId: tableId,
             totals: total,
             vat: totalVat,
+            status: req.body.status,
             grandTotal: grandTotal
         });
 
@@ -132,6 +136,36 @@ async function deletePurchaseOrder(req,res){
 }
 
 
+async function updatePurchaseStatus(req, res) {
+    try {
+        const purchaseOrder = await Purchase.findByPk(req.params.id);
+
+        if (!purchaseOrder) {
+            return res.status(404).json({ message: 'Purchase order not found' });
+        }
+
+        await purchaseOrder.update({
+            status: req.body.status
+        });
+
+        res.status(200).json(purchaseOrder);
+
+    } catch (error) {
+        res.status(500).json(generateServerErrorResponse(error));
+    }
+}
 
 
-module.exports = {createPurchaseOrder,getAllPurchaseOrders,getPurchaseOrderById,updatePurchaseOrder,deletePurchaseOrder};
+async function getPurchaseOrderByLocationId(req,res){
+    try {
+        const purchaseOrders = await Purchase.findAll({
+            where: { locationId: req.params.id }
+        });
+
+        res.status(200).json(purchaseOrders);
+    } catch (error) {
+        res.status(500).json(generateServerErrorResponse(error));
+    }
+}
+
+module.exports = {createPurchaseOrder,getAllPurchaseOrders,getPurchaseOrderById,updatePurchaseOrder,deletePurchaseOrder, updatePurchaseStatus, getPurchaseOrderByLocationId};
