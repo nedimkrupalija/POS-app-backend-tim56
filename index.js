@@ -1,3 +1,4 @@
+const { FORCE } = require('sequelize/lib/index-hints');
 const app = require('./config/app.js');
 const db = require('./config/db.js');
 
