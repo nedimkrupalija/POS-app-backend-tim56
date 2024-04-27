@@ -88,7 +88,7 @@ async function getAllPurchaseOrders(req,res){
             purchaseOrder.dataValues.items = items;
         });
 
-        res.status(200).json(purchaseOrders);
+        res.status(200).json({items: purchaseOrders});
     } catch (error) {
         res.status(500).json(generateServerErrorResponse(error));
     }
@@ -104,7 +104,7 @@ async function getPurchaseOrderById(req,res){
         if (!purchaseOrder){
             res.status(404).json({ message: 'Purshase order not found' });
         } else {
-            res.status(200).json(purchaseOrder);
+            res.status(200).json({items : purchaseOrder});
         }
     } catch (error) {
         res.status(500).json(generateServerErrorResponse(error));
@@ -195,7 +195,7 @@ async function getPurchaseOrderByLocationId(req,res){
             purchaseOrder.dataValues.items = items;
         });
 
-        res.status(200).json(purchaseOrders);
+        res.status(200).json({items : purchaseOrders});
     } catch (error) {
         res.status(500).json(generateServerErrorResponse(error));
     }
