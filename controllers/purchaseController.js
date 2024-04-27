@@ -88,7 +88,7 @@ async function getAllPurchaseOrders(req,res){
             purchaseOrder.dataValues.items = items;
         });
 
-        res.status(200).json({items: purchaseOrders});
+        res.status(200).json(purchaseOrders);
     } catch (error) {
         res.status(500).json(generateServerErrorResponse(error));
     }
@@ -195,7 +195,7 @@ async function getPurchaseOrderByLocationId(req,res){
             purchaseOrder.dataValues.items = items;
         });
 
-        res.status(200).json({items : purchaseOrders});
+        res.status(200).json(purchaseOrders);
     } catch (error) {
         res.status(500).json(generateServerErrorResponse(error));
     }
