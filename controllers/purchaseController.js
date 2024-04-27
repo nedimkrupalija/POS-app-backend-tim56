@@ -104,7 +104,7 @@ async function getPurchaseOrderById(req,res){
         if (!purchaseOrder){
             res.status(404).json({ message: 'Purshase order not found' });
         } else {
-            res.status(200).json({items : purchaseOrder});
+            res.status(200).json(purchaseOrder);
         }
     } catch (error) {
         res.status(500).json(generateServerErrorResponse(error));
