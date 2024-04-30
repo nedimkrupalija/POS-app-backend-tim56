@@ -81,7 +81,7 @@ async function createPurchaseOrder(req, res) {
 async function getAllPurchaseOrders(req,res){
     try {
         
-        const purchaseOrders = await Purchase.findAll({include: [Location, Table]});
+        const purchaseOrders = await Purchase.findAll({include: [Location, Table, Item]});
 
         purchaseOrders.forEach(async purchaseOrder => {
             const items = await purchaseOrder.getItems();
