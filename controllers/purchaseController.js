@@ -187,7 +187,8 @@ async function updatePurchaseStatus(req, res) {
 async function getPurchaseOrderByLocationId(req,res){
     try {
         const purchaseOrders = await Purchase.findAll({
-            where: { locationId: req.params.id }
+            where: { locationId: req.params.id },
+            include: [Location, Table, Item]
         });
 
         purchaseOrders.forEach(async purchaseOrder => {
