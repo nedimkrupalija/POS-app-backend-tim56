@@ -190,23 +190,19 @@ async function createInvoice(req, res) {
     
     doc.font('Courier')
        .fontSize(10)
-       .text(locations['name'], { align: 'center' })
+       .text(locations['name'], { align: 'center',   encoding: 'utf-8'  })
        .moveDown(1);
     
     drawHorizontalLine("-");
     doc.moveDown(2)
-    doc.font('Helvetica-Bold')
+    doc.font('Courier-Bold')
        .fontSize(20)
-       .text('Invoice', { align: 'center' })
+       .text('INVOICE', { align: 'center' })
       
        doc.font('Courier')
        .fontSize(10)
        .text(`LID: ${tableData.id}`)
        .moveDown(0.5);
-       if(tableData.tableId!=null)
-   doc.font('Courier')
-    .fontSize(10)
-    .text("TID: "+tableData.tableId)
     drawHorizontalLine("-");
 
     let yOffset = 175; 
