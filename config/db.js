@@ -61,5 +61,7 @@ db.item.belongsToMany(db.purchase,{through: db.purchaseItem});
 db.purchase.belongsTo(db.location);
 db.location.hasMany(db.purchase);
 
+db.purchase.belongsTo(db.table);
+db.table.hasMany(db.purchase);
 
 module.exports = db;

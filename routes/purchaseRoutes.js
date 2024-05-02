@@ -15,6 +15,7 @@ router.put('/:id',purchaseController.updatePurchaseOrder);
 router.delete('/:id',purchaseController.deletePurchaseOrder);
 
 router.put('/status/:id',purchaseController.updatePurchaseStatus);
+router.post('/invoice-pdf',purchaseController.createInvoice);
 
 
 router.get('/location/:id', purchaseController.getPurchaseOrderByLocationId);
