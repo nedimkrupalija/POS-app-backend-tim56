@@ -1,7 +1,6 @@
 const db = require('../config/db.js');
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
-const Location = db.location
 const { generateServerErrorResponse } = require('../utils/messages.js');
 const { deleteVAT } = require('./vatController.js');
 
