@@ -1,10 +1,10 @@
 const JWT_SECRET="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 const DB_CRED = {
-    name: "db_aa6c5b_sipos",
-    user: "aa6c5b_sipos",
-    pass: "sipostim56",
-    host: "MYSQL6008.site4now.net"
+    name: "sipos",
+    user: "root",
+    pass: "password",
+    host: "127.0.0.1:3306"
 }
 
 module.exports = {
