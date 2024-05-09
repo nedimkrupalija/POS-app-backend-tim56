@@ -4,7 +4,7 @@ const DB_CRED = {
     name: "sipos",
     user: "admin",
     pass: "",
-    host: "127.0.0.1"
+    host: "db"
 }
 
 module.exports = {
