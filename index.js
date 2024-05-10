@@ -7,12 +7,6 @@ const PORT = process.env.PORT || 3000;
 
 
  db.sequelize.sync({force : true}).then(async () => {
-    await db.user.create({
-        username: 'neda',
-        password: '$2a$10$LgbZr9yA/M8wM.Emsv199uUXoopkU5w4F4Wp0GUqi6hqjuw8t5TbG',
-        phoneNumber: '062012374',
-        role: 'superadmin'
-    });
 
     await db.location.create({
         name: 'Frizerski salon FS',
@@ -21,8 +15,17 @@ const PORT = process.env.PORT || 3000;
     });
 
     await db.user.create({
+        username: 'neda',
+        password: '$2a$10$LgbZr9yA/M8wM.Emsv199uUXoopkU5w4F4Wp0GUqi6hqjuw8t5TbG',
+        phoneNumber: '062012374',
+        role: 'superadmin'
+    });
+
+   
+
+    await db.user.create({
         username: 'test',
-        password: '$2a$10$LgbZr9yA/M8wM.Emsv199uUXoopkU5w4F4Wp0GUqi6hqjuw8t5Tb',
+        password: '$2a$10$LgbZr9yA/M8wM.Emsv199uUXoopkU5w4F4Wp0GUqi6hqjuw8t5TbG',
         phoneNumber: '852818',
         role: 'user',
         LocationId: 1
