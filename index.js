@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 
     await db.location.create({
         name: 'Frizerski salon FS',
-        address: 'Zmaja od Bosne bb.'
+        adress: 'Zmaja od Bosne bb.'
         
     });
 
