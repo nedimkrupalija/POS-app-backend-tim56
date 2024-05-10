@@ -1,19 +1,33 @@
 const { FORCE } = require('sequelize/lib/index-hints');
 const app = require('./config/app.js');
 const db = require('./config/db.js');
-
-db.sequelize.sync();
-
-db.user.create({
-    username: 'neda',
-    password: '$2a$10$LgbZr9yA/M8wM.Emsv199uUXoopkU5w4F4Wp0GUqi6hqjuw8t5TbG',
-    role: 'superadmin'
-});
+const { pathsToModuleNameMapper } = require('ts-jest');
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+
+ db.sequelize.sync({force : true}).then(async () => {
+    await db.user.create({
+        username: 'neda',
+        password: '$2a$10$LgbZr9yA/M8wM.Emsv199uUXoopkU5w4F4Wp0GUqi6hqjuw8t5TbG',
+        phoneNumber: '062012374',
+        role: 'superadmin'
+    });
+
+    await db.location.create({
+        name: 'Frizerski salon FS',
+        address: 'Zmaja od Bosne bb.'
+        
+    });
+
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+    
+})
+
+
+
+
 
 module.exports = app;
