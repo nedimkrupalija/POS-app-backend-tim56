@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 
 module.exports = (sequelize, DataTypes) =>
-    sequelize.define("Storage", {
+    sequelize.define("storage", {
         status: Sequelize.STRING,
     });

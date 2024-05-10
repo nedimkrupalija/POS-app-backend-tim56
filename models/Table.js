@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 
 module.exports = (sequelize, DataTypes) =>
-    sequelize.define("Table", {
+    sequelize.define("table", {
         name:   Sequelize.STRING
     });

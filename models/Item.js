@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 
 module.exports = (sequelize, DataTypes) =>
-    sequelize.define("Item", {
+    sequelize.define("item", {
         name:           Sequelize.STRING,
         barCode:        Sequelize.STRING,
         measurmentUnit: Sequelize.STRING,
