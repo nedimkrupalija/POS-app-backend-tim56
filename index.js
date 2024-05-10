@@ -25,7 +25,7 @@ const PORT = process.env.PORT || 3000;
         password: '$2a$10$LgbZr9yA/M8wM.Emsv199uUXoopkU5w4F4Wp0GUqi6hqjuw8t5Tb',
         phoneNumber: '852818',
         role: 'user',
-        locationId: 1
+        LocationId: 1
     });
 
     app.listen(PORT, () => {
