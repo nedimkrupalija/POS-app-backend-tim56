@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 
 module.exports = (sequelize, DataTypes) =>
-    sequelize.define("purchase", {
+    sequelize.define("Purchase", {
         totals:     Sequelize.INTEGER,
         vat:        Sequelize.FLOAT,
         grandTotal: Sequelize.FLOAT,

@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 
 module.exports = (sequelize, DataTypes) =>
-    sequelize.define("purchaseitem", {
+    sequelize.define("PurchaseItem", {
         quantity:   Sequelize.FLOAT,
     });

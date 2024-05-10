@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 
 module.exports = (sequelize, DataTypes) =>
-    sequelize.define("pos", {
+    sequelize.define("POS", {
         name:   Sequelize.STRING,
         status: Sequelize.STRING
     });
